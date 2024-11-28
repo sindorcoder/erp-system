@@ -5,10 +5,7 @@ import { DataType } from "../../types";
 import { useState } from "react";
 import Crud from "../crud/Crud";
 const TableComponent: React.FC<{ data: DataType[] }> = ({ data }) => {
-  console.log(data);
-
   const [open, setOpen] = useState(false);
-
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -42,12 +39,16 @@ const TableComponent: React.FC<{ data: DataType[] }> = ({ data }) => {
             prefix={<SearchOutlined />}
           />
         </div>
-        <Button onClick={() => setOpen(true)} type="primary" className="!bg-[#0EB182]">
+        <Button
+          onClick={() => setOpen(true)}
+          type="primary"
+          className="!bg-[#0EB182]"
+        >
           Qo'shish
         </Button>
       </div>
       <Table<DataType> columns={columns} dataSource={data} />
-      <Crud open={open} setOpen={setOpen}/>
+      <Crud open={open} setOpen={setOpen} />
     </div>
   );
 };

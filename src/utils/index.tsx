@@ -5,7 +5,7 @@ const Loading = () => {
      return (
           <div className='w-full h-screen flex items-center justify-center'>
             <Flex align="center" gap="middle">
-        <Spin tip="Loading..." size="large"/>
+        <Spin tip="Loading..." size="large" />
       </Flex>
           </div>
      )

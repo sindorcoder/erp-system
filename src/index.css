@@ -6,3 +6,7 @@
 .shadow-cm {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+.ant-upload.ant-upload-select {
+    width: 100%;
+}

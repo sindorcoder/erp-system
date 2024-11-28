@@ -1,13 +1,21 @@
 import { Navigate } from "react-router-dom";
+import { message } from "antd";
 import Admin from "../admin/Admin";
+import { useEffect } from "react";
 
 const Private = () => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    if(token) {
-        return <Admin/>
+  useEffect(() => {
+    if (!token) {
+      message.error("Iltimos Qayta Tizimga Kiring");
     }
-    return <Navigate to="/"/>
-}
+  }, [token]);
 
-export default Private
+  if (token) {
+    return <Admin />;
+  }
+  return <Navigate to="/" />;
+};
+
+export default Private;

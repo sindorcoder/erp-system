@@ -1,8 +1,10 @@
 export type FieldType = {
     login?: string;
     password?: string;
-    kurs?: string;
-    nomi?: string;
+    title?: string;
+    courseId?: number;
+    files?: string;
+    course?: string;
   };
   
 
@@ -15,4 +17,6 @@ export interface DataType {
   key: string;
   name: string;
   age: number;
+  course: string;
+  files: string;
 }

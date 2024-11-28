@@ -1,36 +1,55 @@
 import { IoIosCloudUpload } from "react-icons/io";
-import type { UploadProps } from 'antd';
-import { message, Upload } from 'antd';
+import { Button, message, Upload } from "antd";
+import { useUploaderMutation } from "../../redux/api/allPeople-api";
+import { useEffect } from "react";
 
-const { Dragger } = Upload;
+const App: React.FC<{ setUploadFile: any }> = ({ setUploadFile }) => {
+  const [uploader, { isLoading, data, isSuccess, isError }] =
+    useUploaderMutation();
 
-const props: UploadProps = {
-  name: 'file',
-  multiple: true,
-  action: `${import.meta.env.VITE_BASE_URL_UPLOAD}`,
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
+  const handleUpload = ({ file, fileList }: any) => {
+    if (file.status !== "loading") {
+      const formData = new FormData();
+      for (let i = 0; i < fileList.length; i++) {
+        formData.append("files", fileList[i].originFileObj);
+      }
+      uploader(formData);
     }
-    if (status === 'done') {
-      message.success(`${info.file.name} Fayl Muvaffaqiyatli Biriktirildi.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} Fayl Biriktirishda xatolik.`);
-    }
-  },
-  onDrop(e) {
-    console.log('Dropped files', e.dataTransfer.files);
-  },
-};
+  };
 
-const App: React.FC = () => (
-  <Dragger {...props}>
-    <div className="flex items-center gap-5 justify-center text-[#0EB182]">
-      <IoIosCloudUpload  size={30}/>
-    <p className="text-lg text-[#0EB182]">Fayl Biriktiring</p>
+  useEffect(() => {
+    if (isSuccess) {
+      setUploadFile(data);
+      message.success("Fayl muvaffaqiyatli yuklandi");
+    }
+    if (isError) {
+      message.error("Fayl yuklashda xatolik yuz berdi");
+    }
+  }, [isSuccess, data, isError]);
+
+  return (
+    <div className="w-full">
+      <Upload
+        className="!w-full"
+        accept=".docx, .doc"
+        customRequest={({ onSuccess }: any) => {
+          setTimeout(() => {
+            onSuccess("ok");
+          }, 0);
+        }}
+        onChange={handleUpload}
+      >
+        <Button
+          loading={isLoading}
+          disabled={isLoading}
+          className="!w-full py-5 text-[#0EB182]"
+          icon={<IoIosCloudUpload color="#0EB182" />}
+        >
+          Fayl Biriktiring
+        </Button>
+      </Upload>
     </div>
-  </Dragger>
-);
+  );
+};
 
 export default App;
