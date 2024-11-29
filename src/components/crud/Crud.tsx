@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
-import { Button, Modal, Form, Select, message, Input } from "antd";
+import { useState } from "react";
+import { Button, Modal, Form, Select, Input } from "antd";
 import type { FormProps } from "antd";
 import { FieldType, DataTypes, Course, Contract } from "../../types";
-import { useCreateContractMutation, useGetCourseQuery } from "../../redux/api/allPeople-api";
+import {
+  useCreateContractMutation,
+  useGetCourseQuery,
+  useUpdateContractMutation,
+} from "../../redux/api/allPeople-api";
 import Uploader from "../uploader/Uploader";
+import { useForm } from "antd/es/form/Form";
+import { useCrudEffects } from "../../hooks/useCrudEffects";
 
 const { Option } = Select;
 
 const Crud: React.FC<{
   open: boolean;
   setOpen: (open: boolean) => void;
-  FormData:  Contract[] | any;
-}> = ({ open, setOpen, FormData }) => {
-  const [form] = Form.useForm();
+  FormData: Contract[] | any;
+  setUpdateData: (data: any) => void;
+}> = ({ open, setOpen, FormData, setUpdateData }) => {
+  const [form] = useForm();
   const [uploadFile, setUploadFile] = useState<any>(null);
   const [courseId, setCourseId] = useState<number>(0);
   const [createData, setCreateData] = useState<DataTypes>({
@@ -26,39 +33,38 @@ const Crud: React.FC<{
   });
   const [createContract, { isLoading, data, isSuccess, isError }] =
     useCreateContractMutation();
+  const [
+    updateContract,
+    { data: dataUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate },
+  ] = useUpdateContractMutation();
   const { data: courseData } = useGetCourseQuery();
   const onFinish: FormProps<FieldType>["onFinish"] = () => {
-    createContract(createData);
+    if (FormData?.course?.id) {
+      updateContract({ ...createData, id: FormData?.id });
+      setUpdateData({});
+    } else {
+      createContract(createData);
+      setUpdateData({});
+    }
   };
 
-  useEffect(() => {
-    if (uploadFile) {
-      setCreateData({
-        ...createData,
-        attachment: {
-          origName: uploadFile.data[0].fileName,
-          url: uploadFile.data[0].path,
-          size: uploadFile.data[0].size,
-        },
-      });
-    }
-    if (isSuccess && data) {
-      message.success("Shartnoma muvaffaqiyatli yaratildi");
-      setOpen(false);
-    }
-    if (isError) {
-      message.error("Shartnoma yaratishda xatolik yuz berdi");
-    }
-  }, [uploadFile, data, isSuccess, isError]);
-
-  useEffect(() => {
-    if (courseId) {
-      setCreateData((prev: any) => ({ ...prev, courseId: Number(courseId) }));
-    }
-    if (FormData) {
-      form.setFieldsValue(FormData);
-    }
-  }, [courseId, FormData]);
+  useCrudEffects({
+    isSuccessUpdate,
+    dataUpdate,
+    isErrorUpdate,
+    uploadFile,
+    isSuccess,
+    data,
+    isError,
+    courseId,
+    FormData,
+    open,
+    setOpen,
+    form,
+    setCreateData,
+    createData,
+    setUpdateData,
+  });
 
   const onValuesChange = (values: FieldType) => {
     setCreateData({ ...createData, ...values });
@@ -66,12 +72,16 @@ const Crud: React.FC<{
 
   const cancel = () => {
     setOpen(false);
+    form.resetFields();
+    setUpdateData({});
   };
 
   return (
     <>
       <Modal
-        title="Shartnoma yaratish"
+        title={
+          FormData?.course?.id ? "Shartnoma tahrirlash" : "Shartnoma yaratish"
+        }
         footer={false}
         open={open}
         onCancel={cancel}
@@ -108,7 +118,7 @@ const Crud: React.FC<{
           >
             <Input />
           </Form.Item>
-          <Uploader setUploadFile={setUploadFile} />
+          <Uploader FormDataDoc={FormData} setUploadFile={setUploadFile} />
           <Form.Item label={null}>
             <div className="flex gap-5 items-center justify-end">
               <Button
@@ -127,7 +137,7 @@ const Crud: React.FC<{
                 type="primary"
                 htmlType="submit"
               >
-                Saqlash
+                {FormData?.course?.id ? "Tahrirlash" : "Yaratish"}
               </Button>
             </div>
           </Form.Item>

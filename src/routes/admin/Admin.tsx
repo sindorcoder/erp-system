@@ -6,14 +6,22 @@ import {
   useGetByIdQuery,
 } from "../../redux/api/allPeople-api";
 import { Contract } from "../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Crud from "../../components/crud/Crud";
 
 const Admin = () => {
   const { data } = useGetAllPeopleQuery();
   const [open, setOpen] = useState(false);
+  const [updateData, setUpdateData] = useState<any>({} as any);
   const [id, setId] = useState(0);
   const { data: dataById } = useGetByIdQuery(id);
+
+  useEffect(() => {
+    if (dataById?.data) {
+      setUpdateData(dataById.data);
+    }
+  }, [dataById?.data]);
+
 
   const handleButtonClick = (id: number) => {
     setId(id);
@@ -62,7 +70,12 @@ const Admin = () => {
         data={data?.data.contracts as Contract[]}
         columns={columns}
       />
-      <Crud open={open} setOpen={setOpen} FormData={dataById?.data} />
+      <Crud 
+        open={open} 
+        setOpen={setOpen} 
+        FormData={updateData} 
+        setUpdateData={setUpdateData}
+      />
     </div>
   );
 };

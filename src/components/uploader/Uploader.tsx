@@ -2,8 +2,9 @@ import { IoIosCloudUpload } from "react-icons/io";
 import { Button, message, Upload } from "antd";
 import { useUploaderMutation } from "../../redux/api/allPeople-api";
 import { useEffect } from "react";
+import { GetDataTypes } from "../../types";
 
-const App: React.FC<{ setUploadFile: any }> = ({ setUploadFile }) => {
+const App: React.FC<{ FormDataDoc: GetDataTypes, setUploadFile: any }> = ({ FormDataDoc, setUploadFile }) => {
   const [uploader, { isLoading, data, isSuccess, isError }] =
     useUploaderMutation();
 
@@ -38,6 +39,16 @@ const App: React.FC<{ setUploadFile: any }> = ({ setUploadFile }) => {
           }, 0);
         }}
         onChange={handleUpload}
+        fileList={
+          FormDataDoc?.attachment
+            ? [
+                {
+                  name: FormDataDoc?.attachment?.origName,
+                  url: FormDataDoc?.attachment?.url ,
+                },
+              ]
+            : null
+        }
       >
         <Button
           loading={isLoading}

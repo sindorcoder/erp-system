@@ -20,6 +20,7 @@ export interface DataType {
 }
 
 export interface DataTypes {
+  [x: string]: any;
   title: string;
   courseId: number;
   attachment: {
@@ -29,6 +30,7 @@ export interface DataTypes {
   };
 }
 export interface GetDataTypes {
+  attachment: any;
   data:    Data;
   error:   null;
   success: boolean;
