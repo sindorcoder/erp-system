@@ -2,8 +2,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import Crud from "../crud/Crud";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { TableProps } from "../../types";
+import useSearchParamsHook from "../../hooks/useQueryParams";
 
 const TableComponent = <T extends object>({
   data,
@@ -13,11 +13,14 @@ const TableComponent = <T extends object>({
   pagination,
 }: TableProps<T>) => {
   const [search, setSearch] = useState("");
-
-  const navigate = useNavigate();
-
+  const { setParam, removeParam } = useSearchParamsHook();
   useEffect(() => {
-    navigate(`/admin?search=${search}`);
+    if (search !== "") {
+      setParam("search", search.toLowerCase());
+    }
+    if(search === ""){
+      removeParam("search")
+    }
   }, [search]);
 
   return (

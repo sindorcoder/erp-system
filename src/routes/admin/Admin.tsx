@@ -27,7 +27,7 @@ const Admin = () => {
     if (dataById?.data) {
       setUpdateData(dataById.data);
     }
-  }, [dataById?.data]);
+  }, [dataById]);
 
   const handleButtonClick = (id: number) => {
     setId(id);

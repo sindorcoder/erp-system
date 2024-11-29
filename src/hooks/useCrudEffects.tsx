@@ -41,7 +41,9 @@ export function useCrudEffects({
       message.success("Shartnoma muvaffaqiyatli tahrirlandi");
       setOpen(false);
       form.resetFields();
-      setUpdateData({});
+      if (Object.keys(dataUpdate).length > 0) {
+        setUpdateData(dataUpdate);
+      }
     }
     if (isErrorUpdate) {
       message.error("Shartnoma tahrirlashda xatolik yuz berdi");
@@ -71,9 +73,6 @@ export function useCrudEffects({
   }, [uploadFile, data, isSuccess, isError]);
 
   useEffect(() => {
-    if (courseId) {
-      setCreateData((prev: any) => ({ ...prev, courseId: Number(courseId) }));
-    }
     if (FormData) {
       form.setFieldsValue({
         title: FormData?.title,
@@ -87,7 +86,13 @@ export function useCrudEffects({
         courseId: FormData?.course?.id,
       });
     }
-  }, [courseId, FormData]);
+  }, [FormData]);
+  
+  useEffect(() => {
+    if (courseId) {
+      setCreateData((prev: any) => ({ ...prev, courseId: Number(courseId) }));
+    }
+  }, [courseId]);
 
   useEffect(() => {
     if (!open) {

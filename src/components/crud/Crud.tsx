@@ -42,9 +42,11 @@ const Crud: React.FC<{
     if (FormData?.course?.id) {
       updateContract({ ...createData, id: FormData?.id });
       setUpdateData({});
+      form.resetFields();
     } else {
       createContract(createData);
       setUpdateData({});
+      form.resetFields();
     }
   };
 
@@ -78,7 +80,6 @@ const Crud: React.FC<{
 
   return (
     <>
-    
       <Modal
         title={
           FormData?.course?.id ? "Shartnoma tahrirlash" : "Shartnoma yaratish"
