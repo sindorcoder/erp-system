@@ -41,14 +41,14 @@ const App: React.FC<{ FormDataDoc: GetDataTypes, setUploadFile: any }> = ({ Form
         onChange={handleUpload}
         fileList={
           FormDataDoc?.attachment
-            ? [
+            && [
                 {
                   name: FormDataDoc?.attachment?.origName,
                   url: FormDataDoc?.attachment?.url,
                   size: FormDataDoc?.attachment?.size,
                 },
               ]
-            : null
+            
         }
       >
         <Button
