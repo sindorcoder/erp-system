@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Form, Select, message, Input } from "antd";
 import type { FormProps } from "antd";
-import { FieldType } from "../../types";
-import { useCreateContractMutation } from "../../redux/api/allPeople-api";
+import { FieldType, DataTypes, Course, Contract } from "../../types";
+import { useCreateContractMutation, useGetCourseQuery } from "../../redux/api/allPeople-api";
 import Uploader from "../uploader/Uploader";
 
 const { Option } = Select;
 
-const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
-  open,
-  setOpen,
-}) => {
+const Crud: React.FC<{
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  FormData:  Contract[] | any;
+}> = ({ open, setOpen, FormData }) => {
+  const [form] = Form.useForm();
   const [uploadFile, setUploadFile] = useState<any>(null);
   const [courseId, setCourseId] = useState<number>(0);
-  const [createData, setCreateData] = useState<any>({
+  const [createData, setCreateData] = useState<DataTypes>({
     title: "",
     courseId: 0,
     attachment: {
@@ -24,7 +26,7 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
   });
   const [createContract, { isLoading, data, isSuccess, isError }] =
     useCreateContractMutation();
-
+  const { data: courseData } = useGetCourseQuery();
   const onFinish: FormProps<FieldType>["onFinish"] = () => {
     createContract(createData);
   };
@@ -51,12 +53,15 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
 
   useEffect(() => {
     if (courseId) {
-      setCreateData((prev: any) => ({...prev, courseId: Number(courseId)}));
+      setCreateData((prev: any) => ({ ...prev, courseId: Number(courseId) }));
     }
-  }, [courseId]);
+    if (FormData) {
+      form.setFieldsValue(FormData);
+    }
+  }, [courseId, FormData]);
 
   const onValuesChange = (values: FieldType) => {
-    setCreateData({ ...createData, ...values});
+    setCreateData({ ...createData, ...values });
   };
 
   const cancel = () => {
@@ -74,9 +79,9 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
         maskClosable={false}
       >
         <Form
+          form={form}
           name="basic"
           wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
           onFinish={onFinish}
           onValuesChange={onValuesChange}
           layout="vertical"
@@ -86,19 +91,20 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
             name="courseId"
             rules={[{ required: true, message: "Iltimos kursni kiriting!" }]}
           >
-            <Select placeholder="Kursni tanlang" onChange={(value) => setCourseId(value)}>
-              <Option value="3">Grafik dizayn</Option>
-              <Option value="1">Fullstack</Option>
-              <Option value="2">SMM</Option>
+            <Select
+              placeholder="Kursni tanlang"
+              onChange={(value) => setCourseId(value)}
+            >
+              {courseData?.data?.courses?.map((item: Course) => (
+                <Option value={item.id}>{item.name}</Option>
+              ))}
             </Select>
           </Form.Item>
 
           <Form.Item<FieldType>
             label="Nomi"
             name="title"
-            rules={[
-              { required: true, message: "Iltimos nomini kiriting!" },
-            ]}
+            rules={[{ required: true, message: "Iltimos nomini kiriting!" }]}
           >
             <Input />
           </Form.Item>

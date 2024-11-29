@@ -1,34 +1,15 @@
 import { SearchOutlined } from "@ant-design/icons";
-import type { TableColumnsType } from "antd";
 import { Button, Input, Table } from "antd";
-import { DataType } from "../../types";
-import { useState } from "react";
+import { Contract } from "../../types";
+import { TableColumnsType } from "antd";
 import Crud from "../crud/Crud";
-const TableComponent: React.FC<{ data: DataType[] }> = ({ data }) => {
-  const [open, setOpen] = useState(false);
 
-  const columns: TableColumnsType<DataType> = [
-    {
-      title: "№",
-      dataIndex: "index",
-      key: "id",
-      width: "2%",
-      render: (_, __, index) => index + 1,
-    },
-    {
-      title: "Nomi",
-      dataIndex: ["attachment", "origName"],
-      key: "name",
-      width: "15%",
-    },
-    {
-      title: "Kurs",
-      dataIndex: ["course", "name"],
-      key: "age",
-      width: "20%",
-    },
-  ];
-
+const TableComponent: React.FC<{
+  data: Contract[];
+  columns: TableColumnsType<Contract>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}> = ({ data, columns, open, setOpen }) => {
   return (
     <div className="w-full p-5 border-2 border-gray-300 rounded-lg">
       <div className="flex items-center mb-5 justify-between gap-5">
@@ -47,8 +28,8 @@ const TableComponent: React.FC<{ data: DataType[] }> = ({ data }) => {
           Qo'shish
         </Button>
       </div>
-      <Table<DataType> columns={columns}  dataSource={data} />
-      <Crud open={open} setOpen={setOpen} />
+      <Table<Contract> columns={columns} dataSource={data} />
+      <Crud open={open} setOpen={setOpen} FormData={[]} />
     </div>
   );
 };
