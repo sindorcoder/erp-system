@@ -29,7 +29,7 @@ const TableComponent: React.FC<{
         </Button>
       </div>
       <Table<Contract> columns={columns} dataSource={data} />
-      <Crud open={open} setOpen={setOpen} FormData={[]} />
+      <Crud open={open} setOpen={setOpen} FormData={[]} setUpdateData={{}} />
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Crud: React.FC<{
   open: boolean;
   setOpen: (open: boolean) => void;
   FormData: Contract[] | any;
-  setUpdateData: (data: any) => void;
+  setUpdateData: any;
 }> = ({ open, setOpen, FormData, setUpdateData }) => {
   const [form] = useForm();
   const [uploadFile, setUploadFile] = useState<any>(null);
@@ -78,6 +78,7 @@ const Crud: React.FC<{
 
   return (
     <>
+    
       <Modal
         title={
           FormData?.course?.id ? "Shartnoma tahrirlash" : "Shartnoma yaratish"

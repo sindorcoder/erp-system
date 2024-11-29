@@ -22,7 +22,6 @@ const Admin = () => {
     }
   }, [dataById?.data]);
 
-
   const handleButtonClick = (id: number) => {
     setId(id);
     setOpen(true);
@@ -70,10 +69,10 @@ const Admin = () => {
         data={data?.data.contracts as Contract[]}
         columns={columns}
       />
-      <Crud 
-        open={open} 
-        setOpen={setOpen} 
-        FormData={updateData} 
+      <Crud
+        open={open}
+        setOpen={setOpen}
+        FormData={updateData}
         setUpdateData={setUpdateData}
       />
     </div>
