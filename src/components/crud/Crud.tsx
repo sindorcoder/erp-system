@@ -1,9 +1,9 @@
-import { Button, Modal, Form, Select, InputNumber, message } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Modal, Form, Select, InputNumber, message, Input } from "antd";
 import type { FormProps } from "antd";
 import { FieldType } from "../../types";
-import Uploader from "../uploader/Uploader";
-import { useEffect, useState } from "react";
 import { useCreateContractMutation } from "../../redux/api/allPeople-api";
+import Uploader from "../uploader/Uploader";
 
 const { Option } = Select;
 
@@ -12,46 +12,51 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
   setOpen,
 }) => {
   const [uploadFile, setUploadFile] = useState<any>(null);
+  const [courseId, setCourseId] = useState<number>(0);
   const [createData, setCreateData] = useState<any>({
-   title: "",
-   courseId: 0,
-   attechment: {
-    "size": 0,
-    url: "",
-    originName: ""
-   },
-   course: {
-    id: 0,
-    name: ""
-   }
+    title: "",
+    courseId: 0,
+    attachment: {
+      size: 0,
+      url: "",
+      origName: "",
+    },
   });
   const [createContract, { isLoading, data, isSuccess, isError }] =
     useCreateContractMutation();
-
 
   const onFinish: FormProps<FieldType>["onFinish"] = () => {
     createContract(createData);
   };
 
-
-  // console.log(data)
-
   useEffect(() => {
     if (uploadFile) {
-      setCreateData({ ...createData, attechment: {originName: uploadFile.data[0].fileName, url: uploadFile.data[0].path, size: uploadFile.data[0].size} });
+      setCreateData({
+        ...createData,
+        attachment: {
+          origName: uploadFile.data[0].fileName,
+          url: uploadFile.data[0].path,
+          size: uploadFile.data[0].size,
+        },
+      });
     }
     if (isSuccess && data) {
       message.success("Shartnoma muvaffaqiyatli yaratildi");
+      setOpen(false);
     }
     if (isError) {
       message.error("Shartnoma yaratishda xatolik yuz berdi");
     }
   }, [uploadFile, data, isSuccess, isError]);
 
-  console.log(createData);
+  useEffect(() => {
+    if (courseId) {
+      setCreateData((prev: any) => ({...prev, courseId: Number(courseId)}));
+    }
+  }, [courseId]);
 
-  const onValuesChange = ( values: FieldType) => {
-    setCreateData({ ...createData, ...values, course: {...values}});
+  const onValuesChange = (values: FieldType) => {
+    setCreateData({ ...createData, ...values});
   };
 
   const cancel = () => {
@@ -78,28 +83,24 @@ const Crud: React.FC<{ open: boolean; setOpen: (open: boolean) => void }> = ({
         >
           <Form.Item<FieldType>
             label="Kurs"
-            name="title"
+            name="courseId"
             rules={[{ required: true, message: "Iltimos kursni kiriting!" }]}
           >
-            <Select>
-              <Option value="graphic">Grafik dizayn</Option>
-              <Option value="frontend">Frontend</Option>
-              <Option value="backend">Backend</Option>
-              <Option value="fullstack">Fullstack</Option>
-              <Option value="mobile">Mobile</Option>
-              <Option value="ux">UX/UI</Option>
-              <Option value="marketing">Marketing</Option>
+            <Select placeholder="Kursni tanlang" onChange={(value) => setCourseId(value)}>
+              <Option value="3">Grafik dizayn</Option>
+              <Option value="1">Fullstack</Option>
+              <Option value="2">SMM</Option>
             </Select>
           </Form.Item>
 
           <Form.Item<FieldType>
-            label="Kurs ID"
-            name="courseId"
+            label="Nomi"
+            name="title"
             rules={[
-              { required: true, message: "Iltimos kurs ID ni kiriting!" },
+              { required: true, message: "Iltimos nomini kiriting!" },
             ]}
           >
-            <InputNumber />
+            <Input />
           </Form.Item>
           <Uploader setUploadFile={setUploadFile} />
           <Form.Item label={null}>

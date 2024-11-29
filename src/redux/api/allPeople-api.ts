@@ -22,6 +22,13 @@ const allPeopleApi = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["ERP"],
+    }),
+    getCourse: build.query<any, void>({
+      query: () => ({
+        url: import.meta.env.VITE_BASE_URL_COURSE,
+      }),
+      providesTags: ["ERP"],
     }),
   }),
 });
@@ -30,4 +37,5 @@ export const {
   useGetAllPeopleQuery,
   useUploaderMutation,
   useCreateContractMutation,
+  useGetCourseQuery,
 } = allPeopleApi;

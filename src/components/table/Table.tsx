@@ -47,7 +47,7 @@ const TableComponent: React.FC<{ data: DataType[] }> = ({ data }) => {
           Qo'shish
         </Button>
       </div>
-      <Table<DataType> columns={columns} dataSource={data} />
+      <Table<DataType> columns={columns}  dataSource={data} />
       <Crud open={open} setOpen={setOpen} />
     </div>
   );
