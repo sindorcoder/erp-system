@@ -44,7 +44,8 @@ const App: React.FC<{ FormDataDoc: GetDataTypes, setUploadFile: any }> = ({ Form
             ? [
                 {
                   name: FormDataDoc?.attachment?.origName,
-                  url: FormDataDoc?.attachment?.url ,
+                  url: FormDataDoc?.attachment?.url,
+                  size: FormDataDoc?.attachment?.size,
                 },
               ]
             : null
