@@ -1,3 +1,7 @@
+import { TablePaginationConfig } from "antd";
+
+import { TableColumnsType } from "antd";
+
 export type FieldType = {
     login?: string;
     password?: string;
@@ -60,4 +64,12 @@ export interface Course {
   id:        number;
   name:      string;
   createdAt: Date;
+}
+
+export  interface TableProps<T> {
+  data: T[];
+  columns: TableColumnsType<T>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  pagination?: TablePaginationConfig;
 }

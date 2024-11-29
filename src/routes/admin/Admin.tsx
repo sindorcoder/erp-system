@@ -7,14 +7,21 @@ import {
 } from "../../redux/api/allPeople-api";
 import { Contract } from "../../types";
 import { useEffect, useState } from "react";
-import Crud from "../../components/crud/Crud";
+import Crud from "../../components/crud/Crud"
+import { useSearchParams } from "react-router-dom";
 
 const Admin = () => {
-  const { data } = useGetAllPeopleQuery();
+  const [search, setSearch] = useState("");
+  const { data } = useGetAllPeopleQuery(search);
   const [open, setOpen] = useState(false);
   const [updateData, setUpdateData] = useState<any>({} as any);
   const [id, setId] = useState(0);
+  const [current, setCurrent] = useState(1);
   const { data: dataById } = useGetByIdQuery(id);
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    setSearch(searchParams.get("search") || "");
+  }, [searchParams]);
 
   useEffect(() => {
     if (dataById?.data) {
@@ -30,15 +37,21 @@ const Admin = () => {
   const columns: TableColumnsType<Contract> = [
     {
       title: "№",
-      dataIndex: "index",
-      key: "id",
-      width: "2%",
-      render: (_, __, index) => index + 1,
+      width: "10%",
+      render: (_, __, index) => {
+        return (current - 1) * 10 + index + 1;
+      }
+    },
+    {
+      title: "Fayl nomi",
+      dataIndex: ["attachment", "origName"],
+      key: "name",
+      width: "30%",
     },
     {
       title: "Nomi",
-      dataIndex: ["attachment", "origName"],
-      key: "name",
+      dataIndex: "title",
+      key: "title",
       width: "30%",
     },
     {
@@ -68,6 +81,7 @@ const Admin = () => {
         setOpen={setOpen}
         data={data?.data.contracts as Contract[]}
         columns={columns}
+        pagination={{ pageSize: 10, onChange: (page: number) => setCurrent(page) }}
       />
       <Crud
         open={open}
