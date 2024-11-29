@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Select, InputNumber, message, Input } from "antd";
+import { Button, Modal, Form, Select, message, Input } from "antd";
 import type { FormProps } from "antd";
 import { FieldType } from "../../types";
 import { useCreateContractMutation } from "../../redux/api/allPeople-api";
