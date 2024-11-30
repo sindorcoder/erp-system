@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { TableProps } from "../../types";
 import useSearchParamsHook from "../../hooks/useQueryParams";
 
-
 const TableComponent = ({
   data,
   columns,
@@ -19,8 +18,8 @@ const TableComponent = ({
     if (search !== "") {
       setParam("search", search.toLowerCase());
     }
-    if(search === ""){
-      removeParam("search")
+    if (search === "") {
+      removeParam("search");
     }
   }, [search]);
 
@@ -44,8 +43,19 @@ const TableComponent = ({
           Qo'shish
         </Button>
       </div>
-      <Table key={data?.id} columns={columns} dataSource={data} pagination={pagination} />
-      <Crud open={open} setOpen={setOpen} FormData={[]} setUpdateData={{}} checkUpdate={() => {}} />
+      <Table
+        key={data?.id}
+        columns={columns}
+        dataSource={data}
+        pagination={pagination}
+      />
+      <Crud
+        open={open}
+        setOpen={setOpen}
+        FormData={[]}
+        setUpdateData={{}}
+        checkUpdate={() => {}}
+      />
     </div>
   );
 };

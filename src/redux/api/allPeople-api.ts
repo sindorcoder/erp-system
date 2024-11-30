@@ -3,7 +3,7 @@ import { GetDataTypes } from "../../types";
 
 const allPeopleApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getAllPeople: build.query<GetDataTypes, string>({
+    getAllPeople: build.query<GetDataTypes, string | any>({
       query: (search) => ({
         url: `${import.meta.env.VITE_BASE_URL_GETALL}?search=${search}`,
       }),

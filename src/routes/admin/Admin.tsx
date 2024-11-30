@@ -12,14 +12,16 @@ import { useSearchParams } from "react-router-dom";
 
 const Admin = () => {
   const [search, setSearch] = useState("");
-  const { data } = useGetAllPeopleQuery(search);
   const [open, setOpen] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateData, setUpdateData] = useState<any>({} as any);
   const [id, setId] = useState(0);
   const [current, setCurrent] = useState(1);
-  const { data: dataById } = useGetByIdQuery(id);
+  const [pageSizes, setPageSizes] = useState(10);
   const [searchParams] = useSearchParams();
+
+  const { data: dataById } = useGetByIdQuery(id);
+  const { data } = useGetAllPeopleQuery(search);
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
   }, [searchParams]);
@@ -30,13 +32,15 @@ const Admin = () => {
     }
   }, [isUpdate, dataById?.data]);
 
-  console.log(isUpdate);
-  console.log(dataById?.data);
-
   const handleButtonClick = (id: number) => {
     setId(id);
     setOpen(true);
     setIsUpdate(true);
+  };
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setCurrent(page);
+    setPageSizes(pageSize);
   };
 
   const columns: TableColumnsType<Contract> = [
@@ -44,7 +48,7 @@ const Admin = () => {
       title: "№",
       width: "10%",
       render: (_, __, index) => {
-        return (current - 1) * 10 + index + 1;
+        return (current - 1) * pageSizes + index + 1;
       },
     },
     {
@@ -87,7 +91,9 @@ const Admin = () => {
         data={data?.data.contracts as Contract[]}
         columns={columns}
         pagination={{
-          onChange: (page: number) => setCurrent(page),
+          current,
+          total: data?.data.total,
+          onChange: handlePageChange,
         }}
         checkUpdate={setIsUpdate}
       />
