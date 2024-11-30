@@ -9,6 +9,7 @@ const allPeopleApi = api.injectEndpoints({
       }),
       providesTags: ["ERP"],
     }),
+
     uploader: build.mutation<GetDataTypes, any>({
       query: (data) => ({
         url: import.meta.env.VITE_BASE_URL_UPLOAD,
@@ -17,6 +18,7 @@ const allPeopleApi = api.injectEndpoints({
       }),
       invalidatesTags: ["ERP"],
     }),
+
     createContract: build.mutation<GetDataTypes, any>({
       query: (data) => ({
         url: import.meta.env.VITE_BASE_URL_CREATE,
@@ -25,6 +27,7 @@ const allPeopleApi = api.injectEndpoints({
       }),
       invalidatesTags: ["ERP"],
     }),
+
     updateContract: build.mutation<GetDataTypes, any>({
       query: (data) => ({
         url: `${import.meta.env.VITE_BASE_URL_UPDATE}/${data.id}`,
@@ -33,12 +36,14 @@ const allPeopleApi = api.injectEndpoints({
       }),
       invalidatesTags: ["ERP"],
     }),
+
     getById: build.query<GetDataTypes, number | null>({
       query: (id) => ({
         url: `${import.meta.env.VITE_BASE_URL_GETID}/${id}`,
       }),
       providesTags: ["ERP"],
     }),
+
     getCourse: build.query<GetDataTypes, void>({
       query: () => ({
         url: import.meta.env.VITE_BASE_URL_GETCOURSE,
