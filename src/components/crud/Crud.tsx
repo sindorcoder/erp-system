@@ -18,7 +18,8 @@ const Crud: React.FC<{
   setOpen: (open: boolean) => void;
   FormData: Contract[] | any;
   setUpdateData: any;
-}> = ({ open, setOpen, FormData, setUpdateData }) => {
+  setIsUpdate: (isUpdate: boolean) => void;
+}> = ({ open, setOpen, FormData, setUpdateData, setIsUpdate }) => {
   const [form] = useForm();
   const [uploadFile, setUploadFile] = useState<any>(null);
   const [courseId, setCourseId] = useState<number>(0);
@@ -47,6 +48,7 @@ const Crud: React.FC<{
     setOpen(false);
     form.resetFields();
     setUpdateData({});
+    setIsUpdate(false);
   };
 
   useCrudEffects({
@@ -65,6 +67,7 @@ const Crud: React.FC<{
     setCreateData,
     createData,
     setUpdateData,
+    setIsUpdate,
   });
 
   const onValuesChange = (values: FieldType) => {
@@ -75,6 +78,7 @@ const Crud: React.FC<{
     setOpen(false);
     form.resetFields();
     setUpdateData({});
+    setIsUpdate(false);
   };
 
   return (

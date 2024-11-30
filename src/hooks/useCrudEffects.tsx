@@ -19,6 +19,7 @@ export function useCrudEffects({
   setCreateData,
   createData,
   setUpdateData,
+  setIsUpdate,
 }: {
   isSuccessUpdate: boolean;
   dataUpdate: any;
@@ -35,6 +36,7 @@ export function useCrudEffects({
   setCreateData: (data: DataTypes | ((prev: any) => any)) => void;
   createData: DataTypes;
   setUpdateData: any;
+  setIsUpdate: (isUpdate: boolean) => void;
 }) {
   useEffect(() => {
     if (isSuccessUpdate && dataUpdate) {
@@ -42,10 +44,12 @@ export function useCrudEffects({
       setOpen(false);
       form.resetFields();
       setUpdateData({});
+      setIsUpdate(false);
     }
     if (isErrorUpdate) {
       message.error("Shartnoma tahrirlashda xatolik yuz berdi");
       setUpdateData({});
+      setIsUpdate(false);
     }
   }, [isSuccessUpdate, dataUpdate, isErrorUpdate]);
 

@@ -14,6 +14,7 @@ const Admin = () => {
   const [search, setSearch] = useState("");
   const { data } = useGetAllPeopleQuery(search);
   const [open, setOpen] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [updateData, setUpdateData] = useState<any>({} as any);
   const [id, setId] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -24,14 +25,18 @@ const Admin = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (dataById?.data && updateData.id === dataById.data.id) {
-      setUpdateData(dataById.data);
+    if (isUpdate) {
+      setUpdateData(dataById?.data);
     }
-  }, [dataById]);
+  }, [isUpdate, dataById?.data]);
+
+  console.log(isUpdate);
+  console.log(dataById?.data);
 
   const handleButtonClick = (id: number) => {
     setId(id);
     setOpen(true);
+    setIsUpdate(true);
   };
 
   const columns: TableColumnsType<Contract> = [
@@ -90,6 +95,7 @@ const Admin = () => {
         setOpen={setOpen}
         FormData={updateData}
         setUpdateData={setUpdateData}
+        setIsUpdate={setIsUpdate}
       />
     </div>
   );
