@@ -73,4 +73,5 @@ export  interface TableProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   pagination?: TablePaginationConfig;
+  checkUpdate: (isUpdate: boolean) => void;
 }

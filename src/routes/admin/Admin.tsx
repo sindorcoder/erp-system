@@ -89,13 +89,14 @@ const Admin = () => {
         pagination={{
           onChange: (page: number) => setCurrent(page),
         }}
+        checkUpdate={setIsUpdate}
       />
       <Crud
         open={open}
         setOpen={setOpen}
         FormData={updateData}
         setUpdateData={setUpdateData}
-        setIsUpdate={setIsUpdate}
+        checkUpdate={setIsUpdate}
       />
     </div>
   );

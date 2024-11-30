@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { TableProps } from "../../types";
 import useSearchParamsHook from "../../hooks/useQueryParams";
 
+
 const TableComponent = ({
   data,
   columns,
@@ -44,7 +45,7 @@ const TableComponent = ({
         </Button>
       </div>
       <Table key={data?.id} columns={columns} dataSource={data} pagination={pagination} />
-      <Crud open={open} setOpen={setOpen} FormData={[]} setUpdateData={{}} />
+      <Crud open={open} setOpen={setOpen} FormData={[]} setUpdateData={{}} checkUpdate={() => {}} />
     </div>
   );
 };
