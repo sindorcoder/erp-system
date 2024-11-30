@@ -24,7 +24,7 @@ const Admin = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (dataById?.data && updateData.id !== dataById.data.id) {
+    if (dataById?.data && updateData.id === dataById.data.id) {
       setUpdateData(dataById.data);
     }
   }, [dataById]);

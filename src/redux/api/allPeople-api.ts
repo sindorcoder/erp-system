@@ -43,6 +43,7 @@ const allPeopleApi = api.injectEndpoints({
       query: () => ({
         url: import.meta.env.VITE_BASE_URL_GETCOURSE,
       }),
+      providesTags: ["ERP"],
     }),
   }),
 });
