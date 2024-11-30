@@ -3,8 +3,8 @@ import { ReactNode, Suspense } from "react"
 const Loading = () => {
 
      return (
-          <div className='w-full h-screen flex flex-col items-center justify-center'>
-            <Flex align="center" gap="middle">
+          <div className='w-full h-screen flex items-center justify-center'>
+            <Flex align="center" className="flex-col" gap="middle">
         <Spin tip="Loading..." size="large" >
           <div className="content"></div>
         </Spin>
