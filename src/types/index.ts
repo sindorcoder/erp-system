@@ -41,6 +41,7 @@ export interface GetDataTypes {
 }
 
 export interface Data {
+  [x: string]: any;
   contracts: Contract[];
   total:     number;
   courses: Course[];
@@ -66,9 +67,9 @@ export interface Course {
   createdAt: Date;
 }
 
-export  interface TableProps<T> {
-  data: T[];
-  columns: TableColumnsType<T>;
+export  interface TableProps {
+  data: any;
+  columns: TableColumnsType<any>;
   open: boolean;
   setOpen: (open: boolean) => void;
   pagination?: TablePaginationConfig;

@@ -3,9 +3,11 @@ import { ReactNode, Suspense } from "react"
 const Loading = () => {
 
      return (
-          <div className='w-full h-screen flex items-center justify-center'>
+          <div className='w-full h-screen flex flex-col items-center justify-center'>
             <Flex align="center" gap="middle">
-        <Spin tip="Loading..." size="large" />
+        <Spin tip="Loading..." size="large" >
+          <div className="content"></div>
+        </Spin>
       </Flex>
           </div>
      )

@@ -38,16 +38,15 @@ const Crud: React.FC<{
     { data: dataUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate },
   ] = useUpdateContractMutation();
   const { data: courseData } = useGetCourseQuery();
-  const onFinish: FormProps<FieldType>["onFinish"] = () => {
-    if (FormData?.course?.id) {
-      updateContract({ ...createData, id: FormData?.id });
-      setUpdateData({});
-      form.resetFields();
+  const onFinish: FormProps<FieldType>["onFinish"] = async () => {
+    if (FormData) {
+      await updateContract({ ...createData, id: FormData?.id });
     } else {
-      createContract(createData);
-      setUpdateData({});
-      form.resetFields();
+      await createContract(createData);
     }
+    setOpen(false);
+    form.resetFields();
+    setUpdateData({});
   };
 
   useCrudEffects({
@@ -108,7 +107,7 @@ const Crud: React.FC<{
               onChange={(value) => setCourseId(value)}
             >
               {courseData?.data?.courses?.map((item: Course) => (
-                <Option value={item.id}>{item.name}</Option>
+                <Option key={item.id} value={item.id}>{item.name}</Option>
               ))}
             </Select>
           </Form.Item>

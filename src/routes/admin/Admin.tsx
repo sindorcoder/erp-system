@@ -7,7 +7,7 @@ import {
 } from "../../redux/api/allPeople-api";
 import { Contract } from "../../types";
 import { useEffect, useState } from "react";
-import Crud from "../../components/crud/Crud"
+import Crud from "../../components/crud/Crud";
 import { useSearchParams } from "react-router-dom";
 
 const Admin = () => {
@@ -24,7 +24,7 @@ const Admin = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (dataById?.data) {
+    if (dataById?.data && updateData.id !== dataById.data.id) {
       setUpdateData(dataById.data);
     }
   }, [dataById]);
@@ -40,7 +40,7 @@ const Admin = () => {
       width: "10%",
       render: (_, __, index) => {
         return (current - 1) * 10 + index + 1;
-      }
+      },
     },
     {
       title: "Fayl nomi",
@@ -81,7 +81,9 @@ const Admin = () => {
         setOpen={setOpen}
         data={data?.data.contracts as Contract[]}
         columns={columns}
-        pagination={{ pageSize: 10, onChange: (page: number) => setCurrent(page) }}
+        pagination={{
+          onChange: (page: number) => setCurrent(page),
+        }}
       />
       <Crud
         open={open}

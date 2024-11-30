@@ -33,7 +33,7 @@ const allPeopleApi = api.injectEndpoints({
       }),
       invalidatesTags: ["ERP"],
     }),
-    getById: build.query<GetDataTypes, number>({
+    getById: build.query<GetDataTypes, number | null>({
       query: (id) => ({
         url: `${import.meta.env.VITE_BASE_URL_GETID}/${id}`,
       }),
